@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:for_auth/screens/main_screens/authView.dart';
 import 'package:for_auth/screens/main_screens/homeScreen.dart';
 import 'package:for_auth/screens/main_screens/viewscreen.dart';
+import 'dart:async';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 

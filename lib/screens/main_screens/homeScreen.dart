@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:for_auth/screens/alternative_screens/the_empty_screen.dart';
+import 'package:for_auth/screens/outscreens/opencamera.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,6 +14,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  late final cameras;
+  late final firstCamera;
+  late Directory rootPath;
+  Future<void> initCamera() async {
+    cameras = await availableCameras();
+    firstCamera = cameras.first;
+  }
+
+  late String file_path;
+
+  Future<String> returnFile() async {
+    return file_path = await FilesystemPicker.open(
+      title: 'Open file',
+      context: context,
+      rootDirectory: rootPath,
+      fsType: FilesystemType.file,
+      folderIconColor: Colors.teal,
+      allowedExtensions: ['.txt'],
+      fileTileSelectMode: FileTileSelectMode.wholeTile,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initCamera();
+    returnFile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +55,14 @@ class HomeScreenState extends State<HomeScreen> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.red,
             label: 'Open Camera',
-            onPressed: () {
-              setState(() {});
+            onPressed: () async {
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TakePictureScreen(camera: firstCamera)));
+              });
             },
           ),
           SpeedDialChild(
