@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:for_auth/model/image.dart';
 import 'package:for_auth/screens/alternative_screens/the_empty_screen.dart';
+import 'package:for_auth/screens/outscreens/filepickers.dart';
 import 'package:for_auth/screens/outscreens/opencamera.dart';
+import 'package:path/path.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,44 +19,77 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   late final cameras;
   late final firstCamera;
-  late Directory rootPath;
+  File? file;
+  ImageModel? imageModel;
+  List<String>? paths;
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+
   Future<void> initCamera() async {
     cameras = await availableCameras();
     firstCamera = cameras.first;
-  }
-
-  late String file_path;
-
-  Future<String> returnFile() async {
-    return file_path = await FilesystemPicker.open(
-      title: 'Open file',
-      context: context,
-      rootDirectory: rootPath,
-      fsType: FilesystemType.file,
-      folderIconColor: Colors.teal,
-      allowedExtensions: ['.txt'],
-      fileTileSelectMode: FileTileSelectMode.wholeTile,
-    );
   }
 
   @override
   void initState() {
     super.initState();
     initCamera();
-    returnFile();
   }
 
   @override
   Widget build(BuildContext context) {
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+
+    final listofitems = Padding(
+        padding: EdgeInsets.all(10),
+        child: ListTile(
+          leading: Icon(
+            Icons.image,
+            color: Colors.blue,
+          ),
+          title: Text(fileName),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.send,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, "/succes");
+            },
+          ),
+        ));
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Here is Title"),
+        actions: [
+          GestureDetector(
+            child: Icon(Icons.exit_to_app),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
       floatingActionButton: SpeedDial(
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         speedDialChildren: <SpeedDialChild>[
           SpeedDialChild(
-            child: const Icon(Icons.directions_run),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.red,
+            child: const Icon(
+              Icons.camera,
+              color: Colors.white,
+            ),
+            foregroundColor: Colors.blue,
+            backgroundColor: Colors.blue,
             label: 'Open Camera',
             onPressed: () async {
               setState(() {
@@ -66,30 +102,26 @@ class HomeScreenState extends State<HomeScreen> {
             },
           ),
           SpeedDialChild(
-            child: const Icon(Icons.directions_walk),
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.yellow,
+            child: const Icon(
+              Icons.file_copy_outlined,
+              color: Colors.white,
+            ),
+            foregroundColor: Colors.blue,
+            backgroundColor: Colors.blue,
             label: 'Select file file',
             onPressed: () {
-              setState(() {});
-            },
-          ),
-          SpeedDialChild(
-            child: const Icon(Icons.directions_bike),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.green,
-            label: 'Let\'s go cycling!',
-            onPressed: () {
-              setState(() {});
+              setState(() async {
+                selectFile();
+              });
             },
           ),
         ],
-        closedForegroundColor: Colors.black,
-        openForegroundColor: Colors.white,
-        closedBackgroundColor: Colors.white,
-        openBackgroundColor: Colors.black,
+        closedForegroundColor: Colors.blue,
+        openForegroundColor: Colors.blue,
+        closedBackgroundColor: Colors.blue,
+        openBackgroundColor: Colors.blue,
       ),
-      body: EmptyViewScreen(),
+      body: (fileName == "No File Selected") ? EmptyViewScreen() : listofitems,
     );
   }
 }

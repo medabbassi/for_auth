@@ -28,7 +28,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Get a specific camera from the list of available cameras.
       widget.camera,
       // Define the resolution to use.
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
     );
 
     // Next, initialize the controller. This returns a Future.
@@ -46,22 +46,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Take a picture')),
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            // If the Future is complete, display the preview.
             return CameraPreview(_controller);
           } else {
-            // Otherwise, display a loading indicator.
             return const Center(child: CircularProgressIndicator());
           }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
         onPressed: () async {
           try {
             await _initializeControllerFuture;
@@ -79,7 +76,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             print(e);
           }
         },
-        child: const Icon(Icons.camera_alt),
+        child: const Icon(
+          Icons.camera_alt,
+          color: Colors.blue,
+        ),
       ),
     );
   }
@@ -91,14 +91,71 @@ class DisplayPictureScreen extends StatelessWidget {
 
   const DisplayPictureScreen({Key? key, required this.imagePath})
       : super(key: key);
-
+  static const routeName = '/first';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Center(
+            child: Center(
+          child: Column(
+            children: [
+              Image.file(
+                File(imagePath),
+                fit: BoxFit.fill,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Cancel")),
+                    ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Image upload succesfully")));
+                          Navigator.pushNamed(context, "/succes");
+                        },
+                        child: Text("Accept"))
+                  ],
+                ),
+              )
+            ],
+          ),
+        )),
+      ),
+    );
+  }
+}
+
+class SuccesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "operation success",
+              style: TextStyle(color: Colors.blue, fontSize: 32),
+            ),
+            ElevatedButton(
+                style: ButtonStyle(),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/first');
+                },
+                child: Text("Back to Home"))
+          ],
+        ),
+      ),
     );
   }
 }

@@ -4,6 +4,8 @@ import 'package:for_auth/screens/main_screens/homeScreen.dart';
 import 'package:for_auth/screens/main_screens/viewscreen.dart';
 import 'dart:async';
 
+import 'package:for_auth/screens/outscreens/opencamera.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -23,8 +25,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => AuthViewScreen(),
         '/first': (context) => HomeScreen(),
-        '/second': (context) => ViewScreen()
+        '/second': (context) => ViewScreen(),
+        '/succes': (context) => SuccesScreen(),
       },
     );
   }
+
+  static of(BuildContext context) {}
 }

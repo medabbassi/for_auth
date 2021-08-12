@@ -21,8 +21,7 @@ class LoginViewState extends State<LoginViewScreen> {
       decoration: InputDecoration(
           hintText: 'Email',
           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(24.0))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
     );
     final password = TextFormField(
       //controller: pwd,
@@ -32,8 +31,7 @@ class LoginViewState extends State<LoginViewScreen> {
       decoration: InputDecoration(
           hintText: 'Email',
           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(24.0))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
     );
 
     final loginButton = Padding(
@@ -43,9 +41,11 @@ class LoginViewState extends State<LoginViewScreen> {
           Navigator.of(context).pushNamed('/first');
         },
         child: Container(
+            width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(12),
             color: Colors.lightBlueAccent,
-            child: Text('Log In', style: TextStyle(color: Colors.white))),
+            child: Center(
+                child: Text('Log In', style: TextStyle(color: Colors.white)))),
       ),
     );
     final forgotLabel = TextButton(
@@ -60,7 +60,7 @@ class LoginViewState extends State<LoginViewScreen> {
       backgroundColor: Colors.white,
       body: Center(
         child: ListView(
-          shrinkWrap: true,
+          shrinkWrap: false,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: [
             logo,
