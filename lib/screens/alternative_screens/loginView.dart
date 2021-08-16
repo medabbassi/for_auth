@@ -12,7 +12,11 @@ class LoginViewState extends State<LoginViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final logo = Hero(tag: 'hero', child: FlutterLogo(size: 80,));
+    final logo = Hero(
+        tag: 'hero',
+        child: FlutterLogo(
+          size: 80,
+        ));
     final email = TextFormField(
       //controller: mail,
       keyboardType: TextInputType.emailAddress,
@@ -43,7 +47,10 @@ class LoginViewState extends State<LoginViewScreen> {
         child: Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(12),
-            color: Colors.lightBlueAccent,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(5),
+            ),
             child: Center(
                 child: Text('Log In', style: TextStyle(color: Colors.white)))),
       ),

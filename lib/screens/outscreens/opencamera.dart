@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:for_auth/screens/main_screens/homeScreen.dart';
@@ -147,14 +146,18 @@ class DisplayPictureScreen extends StatelessWidget {
                               icon: Icon(
                                 Icons.close_outlined,
                                 color: Colors.blue,
+                                size: 35,
                               )),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, "/succes");
+                              },
                               icon: Icon(
                                 Icons.done,
+                                size: 35,
                                 color: Colors.blue,
                               )),
                         ),
@@ -207,26 +210,44 @@ class SuccessScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 1 / 4,
+            ),
             Icon(
-              Icons.check_circle_outlined,
-              size: 100,
+              Icons.check_circle,
+              size: 200,
               color: Colors.blue,
             ),
             Text(
-              "operation success",
-              style: TextStyle(color: Colors.blue, fontSize: 32),
+              "Upload success",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 1 / 4,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: ElevatedButton(
-                  style: ButtonStyle(),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: Text("Back to Home")),
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/');
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5)),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: EdgeInsets.all(12),
+                    child: Center(
+                        child: Text('Continue',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "OpenSans")))),
+              ),
             )
           ],
         ),
