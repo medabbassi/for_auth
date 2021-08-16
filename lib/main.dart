@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'AuthApp',
       theme: ThemeData(
         fontFamily: "OpenSans",
         primarySwatch: Colors.blue,
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => AuthViewScreen(),
         '/first': (context) => HomeScreen(),
         '/second': (context) => ViewScreen(),
-        '/succes': (context) => SuccesScreen(),
+        '/succes': (context) => SuccessScreen(),
       },
     );
   }

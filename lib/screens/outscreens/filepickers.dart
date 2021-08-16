@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:for_auth/model/image.dart';
-import 'package:for_auth/widgets/buttonwidget.dart';
+
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -37,7 +37,6 @@ class _FilePickerPageState extends State<FilePickerPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     selectFile();
   }
@@ -45,7 +44,6 @@ class _FilePickerPageState extends State<FilePickerPage> {
   @override
   Widget build(BuildContext context) {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
-
     return Center(
       child: Container(
         color: Colors.amber,
