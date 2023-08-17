@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "848651881155",
+    "project_id": "connect-doc-ba363",
+    "storage_bucket": "connect-doc-ba363.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848651881155:android:a35a2d6c490697a645b076",
+        "android_client_info": {
+          "package_name": "com.meddevstuff.connectdoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848651881155-08shurqdbh6tlope9lnu0apav4j0klar.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meddevstuff.connectdoc",
+            "certificate_hash": "7102ca3baece6287f5509f71a01d1bcf11757921"
+          }
+        },
+        {
+          "client_id": "848651881155-kk9vh51945m5j2ket0aoq4l6g2imsm7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArzntZPeyb4AzVPrqalTeJsRHNaRtj5Qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848651881155-drf3mdpuv3ekdd5id7nut8670fg1l3fl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

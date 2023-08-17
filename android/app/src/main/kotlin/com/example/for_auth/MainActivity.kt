@@ -1,4 +1,4 @@
-package com.example.for_auth
+package com.meddevstuff.connectdoc
 
 import io.flutter.embedding.android.FlutterActivity
 

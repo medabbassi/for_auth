@@ -2,14 +2,13 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:for_auth/model/image.dart';
 import 'package:for_auth/screens/alternative_screens/the_empty_screen.dart';
-
 import 'package:for_auth/screens/outscreens/opencamera.dart';
 import 'package:path/path.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
+
+import '../../model/image.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,14 +20,19 @@ class HomeScreenState extends State<HomeScreen> {
   late final firstCamera;
   File? file;
   ImageModel? imageModel;
-  List<String>? paths;
+  List<String> selectedFilePaths =
+      []; // Maintain a list to store selected file paths
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result == null) return;
-    final path = result.files.single.path!;
 
-    setState(() => file = File(path));
+    // Extract the list of selected file paths
+    List<String> filePaths = result.files.map((file) => file.path!).toList();
+
+    setState(() {
+      selectedFilePaths = filePaths; // Update the list of selected file paths
+    });
   }
 
   Future<void> initCamera() async {
@@ -47,31 +51,51 @@ class HomeScreenState extends State<HomeScreen> {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
 
     final listofitems = Padding(
-        padding: EdgeInsets.all(10),
-        child: ListTile(
-          leading: Icon(
-            Icons.image,
+      padding: EdgeInsets.all(10),
+      child: ListTile(
+        leading: Icon(
+          Icons.image,
+          color: Colors.blue,
+        ),
+        title: Text(fileName),
+        trailing: IconButton(
+          icon: Icon(
+            Icons.send,
             color: Colors.blue,
           ),
-          title: Text(fileName),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.send,
-              color: Colors.blue,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, "/succes");
-            },
+          onPressed: () {
+            Navigator.pushNamed(context, "/succes");
+          },
+        ),
+      ),
+    );
+
+    final selectedFilesWidget = Column(
+      children: selectedFilePaths.map((filePath) {
+        return ListTile(
+          leading: Icon(
+            Icons.attachment,
+            color: Colors.blue,
           ),
-        ));
+          title: Text(basename(filePath)),
+          // You can add additional UI components or actions for each selected file
+        );
+      }).toList(),
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         automaticallyImplyLeading: false,
-        title: Text(
-          "Upload Plus +",
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w700),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/profile');
+          },
+          child: Text(
+            "Upload Plus +",
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w700),
+          ),
         ),
         backgroundColor: Colors.white,
         actions: [
@@ -103,9 +127,9 @@ class HomeScreenState extends State<HomeScreen> {
             foregroundColor: Colors.blue,
             backgroundColor: Colors.blue,
             label: 'Browse Files',
-            onPressed: () {
+            onPressed: () async {
               setState(() async {
-                selectFile();
+                await selectFile();
               });
             },
           ),
@@ -137,8 +161,17 @@ class HomeScreenState extends State<HomeScreen> {
           ? EmptyViewScreen()
           : Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 18), child: listofitems),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18),
+                    child: listofitems,
+                  ),
+                  SizedBox(height: 16.0),
+                  // Display the list of selected files
+                  selectedFilesWidget,
+                ],
+              ),
             ),
     );
   }
